@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Happy Paws Shelter</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
+  <style>
+    body.shelter-home {
+      /* Blurred dreamy glassmorphic BG */
+      min-height: 100vh;
+      background: linear-gradient(120deg, #f3ebfa 0%, #dac3ee 80%, #eeddff 100%);
+      overflow-x: hidden;
+      position:relative;
+    }
+    .login-blur-shape {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      z-index: 0;
+      filter: blur(42px);
+      opacity: .36;
+      pointer-events: none;
+    }
+    .blur-shape1 { width: 420px; height: 310px; background: #d5bbfc; left: -90px; top: 80px; }
+    .blur-shape2 { width: 290px; height: 220px; background: #b57edc; right: -90px; top: 260px; }
+    .blur-shape3 { width: 220px; height: 180px; background: #f2c8ff; left: 55vw; top: 66vh; }
+
+    .glass-login-wrap {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 79vh;
+      justify-content: center;
+      margin: 0 auto 3em auto;
+      max-width: 420px;
+    }
+    .glass-login-card {
+      background: rgba(255,255,255,0.53);
+      backdrop-filter: blur(12.5px) saturate(1.3);
+      border-radius: 1.66em;
+      box-shadow: 0 8px 43px #b57edc25, 0 2px 15px #dac3ee14;
+      border: 1.6px solid #ece0fa;
+      padding: 2.7em 2.3em 2em 2.3em;
+      margin-top: 3.8em;
+      min-width: 330px;
+      max-width: 100vw;
+      width:100%;
+    }
+    .glass-login-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2.1em;
+    }
+    .glass-login-header svg {
+      margin-bottom: 0.3em;
+      width: 58px; height: 58px;
+      background: #faf6fe;
+      border-radius: 65%;
+      box-shadow: 0 2px 22px #b57edc18;
+    }
+    .glass-login-title {
+      font-size: 1.5em;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: #8d5bb9;
+      text-shadow: 0 2px 8px #dac3ee12;
+    }
+    .tabs-bar {
+      display: flex;
+      justify-content: space-between;
+      border-radius: 1.5em;
+      background: #f8f6fc;
+      box-shadow: 0 3px 26px #b57edc13;
+      position: relative;
+      margin-bottom: 2.4em;
+      overflow: hidden;
+      user-select:none;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 0.95em;
+      border: none;
+      background: transparent;
+      color: #a487c5;
+      font-size: 1.07em;
+      font-weight: 600;
+      position: relative;
+      cursor: pointer;
+      letter-spacing: 0.025em;
+      transition: color 0.17s;
+      outline: none;
+      z-index: 2;
+    }
+    .tab-btn.active {
+      color: #fff;
+    }
+    .tab-highlight {
+      position: absolute;
+      left: 0; top: 0;
+      width: 33.33%; height: 100%;
+      background: linear-gradient(93deg, #b57edc 5%, #a486ca 95%);
+      border-radius: 1.5em;
+      box-shadow: 0 2px 16px #dac3ee28;
+      z-index: 1;
+      transition: left 0.33s cubic-bezier(.83,.17,.23,.99), width 0.17s;
+    }
+    .glass-form-area {
+      padding-top:0.6em;
+    }
+    .glass-form-area h3 {
+      text-align:center;
+      color: #b57edc;
+      margin-bottom:0.5em;
+      font-size:1.23em;
+      font-weight:600;
+      letter-spacing:0.01em;
+    }
+    .form-group {
+      margin-bottom: 1.35em;
+      position:relative;
+    }
+    .input-svg {
+      position: absolute;
+      left: 0.68em; top: 53%; transform: translateY(-50%);
+      width: 22px; height: 22px; opacity: 0.4;
+      pointer-events: none;
+    }
+    /* Floating label */
+    .glass-form-area input[type="text"],
+    .glass-form-area input[type="email"],
+    .glass-form-area input[type="password"] {
+      width: 100%;
+      border: 1.4px solid #cdb6e6;
+      background: #faf6fe;
+      color: #462b69;
+      font-size: 1.07em;
+      border-radius: 0.7em;
+      padding: 1.13em 1em 1.13em 2.7em;
+      outline: none;
+      font-family: inherit;
+      margin-top:0.18em;
+      box-shadow: 0 2px 12px #b57edc0e;
+      transition: border 0.17s, box-shadow 0.15s, background 0.14s;
+    }
+    .glass-form-area input:focus {
+      border: 2.2px solid #b57edc;
+      box-shadow: 0 2px 14px #b57edc33;
+      background:#fcf7ff;
+    }
+    .form-label {
+      position:absolute;
+      left:2.7em; top:1.09em;
+      color:#a487c5;
+      font-size:1em;
+      pointer-events:none;
+      transition: all 0.16s;
+      background:transparent;
+      font-weight:600;
+    }
+    .glass-form-area input:focus + .form-label,
+    .glass-form-area input:not(:placeholder-shown) + .form-label {
+      top: -0.85em;
+      left:2.4em;
+      font-size: 0.91em;
+      background: #fff9ff;
+      padding: 0 0.3em;
+      color: #b57edc;
+    }
+    .glass-checkbox-row {
+      display: flex; align-items: center; gap:0.7em;
+      font-size:0.99em; color:#7c3fa0; margin:-0.4em 0 1.3em 0;
+    }
+    .glass-checkbox {
+      accent-color:#b57edc;
+      width:1.18em; height:1.18em; border-radius:0.35em; border:1.25px solid #b57edc99;
+      box-shadow:0 2px 9px #dac3ee29;
+      cursor:pointer;
+      margin-right:0.12em;
+    }
+    .glass-form-area .cta-btn {
+      background: linear-gradient(93deg, #b57edc 7%, #a486ca 93%);
+      color: #fff;
+      font-weight: 700;
+      font-size:1.13em;
+      border-radius: 2.13em;
+      padding: 0.87em 0;
+      box-shadow: 0 4px 23px #dac3ee22;
+      border: none;
+      margin-bottom:0.18em;
+      width:100%;
+      transition: background 0.14s, box-shadow 0.13s, transform 0.1s;
+    }
+    .glass-form-area .cta-btn:hover, .glass-form-area .cta-btn:focus {
+      background: linear-gradient(93deg, #a486ca 10%, #b57edc 90%);
+      box-shadow: 0 10px 34px #b57edc28;
+      transform: translateY(-2px) scale(1.03);
+    }
+    .glass-response {
+      min-height: 1.7em;
+      text-align:center;
+      font-size:1.04em;
+      font-weight:600;
+      color: #a04889;
+      margin:0.6em 0 0.1em 0;
+      letter-spacing:0.01em;
+    }
+    .glass-response.success { color: #429d7a; }
+    .glass-form-foot {
+      text-align:center; margin-top:1em; color:#a487c5;font-size:1em;
+    }
+    .glass-link { font-weight:700; color:#b57edc; cursor:pointer; text-decoration: underline; transition: color 0.13s;}
+    .glass-link:hover { color:#7c3fa0; }
+    @media (max-width: 590px) {
+      .glass-login-card, .glass-login-wrap { min-width:90vw; padding: 1em 0.2em; }
+      .glass-login-header svg { width: 42px; height:42px;}
+      .glass-login-header { margin-bottom:1em; }
+    }
+  </style>
+</head>
+<body class="shelter-home">
+  <span class="login-blur-shape blur-shape1"></span>
+  <span class="login-blur-shape blur-shape2"></span>
+  <span class="login-blur-shape blur-shape3"></span>
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="logo-area">
+        <img src="9800_3_09-Photoroom.png" alt="Happy Paws Shelter Logo" class="logo">
+        <span class="site-title">Happy Paws Shelter</span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="adoption.html" class="nav-link">Adoption</a>
+        <a href="donation.html" class="nav-link nav-donate">Donation</a>
+        <a href="volunteers.html" class="nav-link nav-volunteers">Volunteers</a>
+        <a href="login.html" class="nav-link nav-login" aria-current="page">Login</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="glass-login-wrap">
+      <div class="glass-login-card">
+        <div class="glass-login-header">
+
+          <svg viewBox="0 0 64 64" fill="none"><ellipse cx="51.5" cy="22" rx="6.5" ry="8" fill="#b57edc"/><ellipse cx="13.5" cy="22" rx="6.5" ry="8" fill="#a486ca"/><ellipse cx="22.5" cy="13" rx="5.5" ry="6" fill="#b57edc"/><ellipse cx="41.5" cy="13" rx="5.5" ry="6" fill="#a486ca"/><ellipse cx="32" cy="43" rx="18" ry="11" fill="#dac3ee"/><ellipse cx="32" cy="24" rx="10" ry="9" fill="#fff"/><ellipse cx="30" cy="24" rx="2" ry="3" fill="#a486ca"/><ellipse cx="34" cy="24" rx="2" ry="3" fill="#b57edc"/><ellipse cx="32.5" cy="35" rx="4.5" ry="3" fill="#a486ca"/></svg>
+          <div class="glass-login-title">Welcome to Happy Paws</div>
+        </div>
+        <div class="tabs-bar" id="tabsBar">
+          <div class="tab-highlight" id="tabHighlight"></div>
+          <button class="tab-btn active" id="tab0">User Login</button>
+          <button class="tab-btn" id="tab1">Sign Up</button>
+          <button class="tab-btn" id="tab2">Admin Login</button>
+        </div>
+        <div id="glassFormArea" class="glass-form-area"></div>
+      </div>
+    </div>
+  </main>
+<script>
+const tabs = [document.getElementById('tab0'), document.getElementById('tab1'), document.getElementById('tab2')];
+const tabHighlight = document.getElementById('tabHighlight');
+function setTab(idx) {
+  tabs.forEach((b,i)=>b.classList[i===idx?'add':'remove']('active'));
+  tabHighlight.style.left = (idx*33.33)+'%';
+  showForm(idx);
+}
+function icon(type) {
+  if (type==='user') return '<svg class="input-svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#b57edc" stroke-width="2" fill="#fff"/><ellipse cx="12" cy="17" rx="7" ry="4" stroke="#b57edc" stroke-width="2" fill="#fff"/></svg>';
+  if (type==='email') return '<svg class="input-svg" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="4" fill="#fff" stroke="#a486ca" stroke-width="2"/><path d="M4 7l8 7 8-7" stroke="#b57edc" stroke-width="2" fill="none"/></svg>';
+  if (type==='lock') return '<svg class="input-svg" viewBox="0 0 24 24"><rect x="6" y="11" width="12" height="8" rx="3" fill="#fff" stroke="#a486ca" stroke-width="2"/><ellipse cx="12" cy="14.8" rx="1.2" ry="1.7" fill="#b57edc"/></svg>';
+  return '';
+}
+function userLoginForm() {
+  return `<h3>User Login</h3><form id="userLoginForm" autocomplete="off">
+    <div class="form-group">${icon('email')}<input id="userLoginEmail" name="email" type="email" required placeholder=" " autocomplete="email"><label class="form-label" for="userLoginEmail">Email</label></div>
+    <div class="form-group">${icon('lock')}<input id="userLoginPassword" name="password" type="password" required placeholder=" " autocomplete="current-password"><label class="form-label" for="userLoginPassword">Password</label></div>
+    <div class="glass-checkbox-row"><input type="checkbox" id="rememberMe" class="glass-checkbox"><label for="rememberMe">Remember Me</label></div>
+    <button class="cta-btn" type="submit">Login</button>
+    <div class="glass-response" id="userLoginResp"></div>
+    <div class="glass-form-foot">New here? <span class="glass-link" onclick="setTab(1)">Sign Up</span></div>
+  </form>`;
+}
+function userSignupForm() {
+  return `<h3>Create your Account</h3><form id="userSignupForm" autocomplete="off">
+    <div class="form-group">${icon('user')}<input id="userSignupName" name="name" type="text" required placeholder=" " autocomplete="name"><label class="form-label" for="userSignupName">Name</label></div>
+    <div class="form-group">${icon('email')}<input id="userSignupEmail" name="email" type="email" required placeholder=" " autocomplete="email"><label class="form-label" for="userSignupEmail">Email</label></div>
+    <div class="form-group">${icon('lock')}<input id="userSignupPassword" name="password" type="password" required placeholder=" " autocomplete="new-password"><label class="form-label" for="userSignupPassword">Password</label></div>
+    <button class="cta-btn" type="submit">Sign Up</button>
+    <div class="glass-response" id="userSignupResp"></div>
+    <div class="glass-form-foot">Already have an account? <span class="glass-link" onclick="setTab(0)">Login</span></div>
+  </form>`;
+}
+function adminLoginForm() {
+  return `<h3>Staff/Admin Login</h3><form id="adminLoginForm" autocomplete="off">
+    <div class="form-group">${icon('user')}<input id="adminLoginUsername" name="username" type="text" required placeholder=" " autocomplete="username"><label class="form-label" for="adminLoginUsername">Username</label></div>
+    <div class="form-group">${icon('lock')}<input id="adminLoginPassword" name="password" type="password" required placeholder=" " autocomplete="current-password"><label class="form-label" for="adminLoginPassword">Password</label></div>
+    <button class="cta-btn" type="submit">Admin Login</button>
+    <div class="glass-response" id="adminLoginResp"></div>
+    <div class="glass-form-foot">Are you a user? <span class="glass-link" onclick="setTab(0)">User Login</span></div>
+  </form>`;
+}
+function showForm(idx) {
+  const area = document.getElementById('glassFormArea');
+  if (idx===0) area.innerHTML = userLoginForm();
+  if (idx===1) area.innerHTML = userSignupForm();
+  if (idx===2) area.innerHTML = adminLoginForm();
+  if (idx===0) setUserLoginHandler(); else if (idx===1) setUserSignupHandler(); else setAdminLoginHandler();
+}
+tabs.forEach((b,i) => b.onclick=()=>setTab(i));
+setTab(0);
+
+function setUserLoginHandler() {
+  document.getElementById('userLoginForm').onsubmit=async function(e){
+    e.preventDefault();
+    const resp=document.getElementById('userLoginResp');
+    resp.textContent='';
+    try{
+      const data=await fetch('http://localhost:5000/api/users/login',{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+          email:this.email.value,password:this.password.value
+        })}).then(r=>r.json());
+      if(data.success&&data.user){
+        localStorage.setItem('user',JSON.stringify({
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email
+        }));
+
+        // Update navigation
+        if (window.Auth) window.Auth.updateNavigation();
+
+        // Redirect based on where they came from
+        const redirectBack = sessionStorage.getItem('loginRedirect');
+        if (redirectBack) {
+          sessionStorage.removeItem('loginRedirect');
+          window.location.href = redirectBack;
+        } else {
+          window.location.href = 'index.html';
+        }
+      } else resp.textContent=data.message||'Invalid email or password.';
+    }catch{resp.textContent='Login failed. Please try again.';}
+  };
+}
+function setUserSignupHandler() {
+  document.getElementById('userSignupForm').onsubmit=async function(e){
+    e.preventDefault();
+    const resp=document.getElementById('userSignupResp');
+    resp.textContent='';
+    try{
+      const data=await fetch('http://localhost:5000/api/users/signup',{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+          name:this.name.value,email:this.email.value,password:this.password.value
+        })}).then(r=>r.json());
+      if(data.success){
+        resp.textContent='Signup successful! Please login.';
+        resp.classList.add('success');
+        setTimeout(()=>setTab(0),1200);
+      }else{resp.textContent=data.message||'Signup failed.';resp.classList.remove('success');}
+    }catch{resp.textContent='Signup failed. Please try again.';resp.classList.remove('success');}
+  };
+}
+function setAdminLoginHandler() {
+  document.getElementById('adminLoginForm').onsubmit=async function(e){
+    e.preventDefault();
+    const resp=document.getElementById('adminLoginResp');
+    resp.textContent='';
+    try{
+      const data=await fetch('http://localhost:5000/api/admin/login',{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+          username:this.username.value,password:this.password.value
+        })}).then(r=>r.json());
+      if(data.success){
+        localStorage.setItem('admin','true');
+        window.location.href='admin-dashboard.html';
+      } else resp.textContent=data.message||'Invalid username or password.';
+    }catch{resp.textContent='Admin login failed.';}
+  };
+}
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

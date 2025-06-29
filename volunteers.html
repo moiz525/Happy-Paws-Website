@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Our Volunteers | Happy Paws Shelter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
+</head>
+<body class="shelter-home">
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="logo-area">
+        <img src="9800_3_09-Photoroom.png" alt="Happy Paws Shelter Logo" class="logo">
+        <span class="site-title">Happy Paws Shelter</span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="adoption.html" class="nav-link">Adoption</a>
+        <a href="donation.html" class="nav-link nav-donate">Donation</a>
+        <a href="volunteers.html" class="nav-link nav-volunteers" aria-current="page">Volunteers</a>
+        <a href="login.html" class="nav-link nav-login">Login</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="section section-animals">
+      <h2 class="section-heading">Meet Our Volunteers</h2>
+      <div id="volunteerGrid" class="animal-grid"></div>
+    </section>
+  </main>
+  <script>
+    const volunteers = [
+      {
+        name: "Sophie Meowson",
+        image: "download (1).jpeg",
+        desc: "Sophie is a cleaning superstar who makes sure every kennel sparkles. Their behind-the-scenes work is essential."
+      },
+      {
+        name: "Jamie",
+        image: "abc.avif",
+        desc: "Jamie is a calm, steady presence in the cat room, offering gentle love and care. Every shy kitten trusts Jamie’s patient hands."
+      },
+      {
+        name: "Alex",
+        image: "download.jpeg",
+        desc: "Alex brings energy and compassion to every dog walk, making tails wag with joy. Their dedication uplifts both pets and people daily."
+      },
+      {
+        name: "Skyler",
+        image: "download (2).jpeg",
+        desc: "Skylar connects perfectly with animals in need of a little extra attention. Their empathy is unmatched."
+      },
+      {
+        name: "Jamal Woods",
+        image: "images.jpeg",
+        desc: "Jamal is always ready to help, from repairs around the shelter to daily animal care."
+      }
+    ];
+    function createVolunteerCard(vol) {
+      const card = document.createElement('div');
+      card.className = 'animal-card adv-animal-card';
+      const img = document.createElement('img');
+      img.className = 'animal-photo adv-animal-photo';
+      img.src = vol.image;
+      img.alt = vol.name;
+      const name = document.createElement('div');
+      name.className = 'animal-name adv-animal-name';
+      name.textContent = vol.name;
+      const desc = document.createElement('div');
+      desc.className = 'animal-desc adv-animal-desc';
+      desc.textContent = vol.desc;
+      card.appendChild(img);
+      card.appendChild(name);
+      card.appendChild(desc);
+      return card;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('volunteerGrid');
+      volunteers.forEach(vol => {
+        grid.appendChild(createVolunteerCard(vol));
+      });
+    });
+  </script>
+  <script src="auth.js"></script>
+</body>
+</html>

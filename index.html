@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home - Happy Paws Shelter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="shelter-home">
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="logo-area">
+        <img src="9800_3_09-Photoroom.png" alt="Happy Paws Shelter Logo" class="logo">
+        <span class="site-title">Happy Paws Shelter</span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link nav-home" aria-current="page">Home</a>
+        <a href="adoption.html" class="nav-link">Adoption</a>
+        <a href="donation.html" class="nav-link nav-donate">Donation</a>
+        <a href="volunteers.html" class="nav-link nav-volunteers">Volunteers</a>
+        <a href="login.html" class="nav-link nav-login">Login</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-headline">Every Pet Deserves a Loving Home!</h1>
+        <p class="hero-blurb">Find your new best friend among our adorable animals, or help by donating to support their care.</p>
+        <div class="hero-actions">
+          <a href="adoption.html" class="cta-btn cta-adopt">Adopt a Pet</a>
+          <a href="donation.html" class="cta-btn cta-donate">Donate Now</a>
+        </div>
+      </div>
+      <div class="hero-gallery">
+        <img src="pexels-pixabay-247937.jpg" alt="dog" class="hero-animal hero-animal1"/>
+        <img src="pexels-hala-hejazy-2151382607-32097731.jpg" alt="cat" class="hero-animal hero-animal2"/>
+        <img src="pexels-onbab-9330897.jpg" alt="bunny" class="hero-animal hero-animal3"/>
+        <img src="pexels-tanya-gorelova-2199357-3860312.jpg" alt="puppy" class="hero-animal hero-animal4"/>
+        <img src="pexels-catscoming-1444321.jpg" alt="kitten" class="hero-animal hero-animal5"/>
+      </div>
+    </section>
+    <section class="section section-animals">
+      <h2 class="section-heading">Meet Our Animals</h2>
+      <div id="animalGrid" class="animal-grid">
+        <div id="animalLoading" class="loading-message">Loading animals...</div>
+      </div>
+      <div class="reload-button-container">
+        <button id="refreshAnimalsBtn" class="refresh-btn">Refresh Animals</button>
+      </div>
+    </section>
+    <section class="section section-about">
+      <div class="about-card">
+        <h2>Why Choose Happy Paws?</h2>
+        <p>We believe every animal deserves compassion, medical care, and a caring family. With your help, we rescue, heal, and match wonderful pets with loving homes.</p>
+        <ul class="benefits-list">
+          <li>Certified No-Kill, No-Cage Shelter</li>
+          <li>Dedicated Volunteers & On-Site Veterinarians</li>
+          <li>100% of donations go to animal care and food</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <script src="animal-manager.js"></script>
+  <script>
+    // Function to load animals with improved error handling and cache management
+    async function loadAnimals(forceRefresh = true) {
+      const grid = document.getElementById('animalGrid');
+      const loadingEl = document.getElementById('animalLoading');
+      
+      // Show loading indicator
+      if (!loadingEl && grid.children.length === 0) {
+        const loadingDiv = document.createElement('div');
+        loadingDiv.id = 'animalLoading';
+        loadingDiv.className = 'loading-message';
+        loadingDiv.textContent = 'Loading animals...';
+        grid.appendChild(loadingDiv);
+      } else if (loadingEl) {
+        loadingEl.style.display = 'block';
+      }
+
+      try {
+        console.log('Home page loading animals - forcing cache refresh');
+
+        // Always clear the cache first to ensure fresh data
+        if (window.AnimalManager) {
+          window.AnimalManager.clearCache();
+        }
+
+        // Get animals from the AnimalManager with forced refresh to avoid stale data
+        const animals = await window.AnimalManager.fetchAnimals(forceRefresh);
+        console.log('Home page animals loaded successfully:', animals.length); // Debug log
+
+        // Clear the grid to prepare for fresh content
+        grid.innerHTML = '';
+
+        // Filter animals that are featured or have status "Available"
+        const displayAnimals = animals.filter(animal =>
+          animal.Featured || animal.Status === 'Available'
+        );
+
+        console.log('Filtered animals for display:', displayAnimals.length); // Debug log
+        console.log('Animals with images:', displayAnimals.filter(a => a.ImageURL).length);
+
+        // If no animals are available, show a message
+        if (displayAnimals.length === 0) {
+          const noAnimals = document.createElement('div');
+          noAnimals.className = 'no-animals-message';
+          noAnimals.textContent = 'No animals available at the moment. Please check back later!';
+          grid.appendChild(noAnimals);
+          return;
+        }
+
+        // Add each animal to the grid
+        displayAnimals.forEach(animal => {
+          console.log(`Adding ${animal.Name} to grid with image: ${animal.ImageURL}`);
+          grid.appendChild(window.AnimalManager.createAnimalCard(animal));
+        });
+      } catch (error) {
+        console.error('Error loading animals:', error);
+        grid.innerHTML = '';
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'loading-message';
+        errorMsg.textContent = 'Error loading animals. Please try again later.';
+        errorMsg.style.color = '#a04889';
+        grid.appendChild(errorMsg);
+      }
+    }
+
+    // Load animals when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAnimals(true);
+      
+      // Add event listener to refresh button
+      const refreshBtn = document.getElementById('refreshAnimalsBtn');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+          loadAnimals(true);
+        });
+      }
+      
+      // Optional: Auto-refresh every 30 seconds
+      // setInterval(() => loadAnimals(true), 30000);
+    });
+  </script>
+  <script src="auth.js"></script>
+</body>
+</html>

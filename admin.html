@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Access | Happy Paws Shelter</title>
+  <script>
+    // Check if admin is logged in, redirect accordingly
+    if (localStorage.getItem('admin') === 'true') {
+      window.location.href = 'admin-dashboard.html';
+    } else {
+      window.location.href = 'login.html';
+    }
+  </script>
+</head>
+<body>
+  <noscript>
+    <p>JavaScript is required for this page. Please enable JavaScript or use a compatible browser.</p>
+    <meta http-equiv="refresh" content="0;url=login.html">
+    Redirecting to the Login Portal...
+  </noscript>
+</body>
+</html>
